@@ -3,7 +3,8 @@ Enables [Twitch.TV](http://www.twitch.tv/) emoticons in [IRCCloud](https://www.i
 
 ![Screenshot](extras/screenshot.png)
 
-[Click here to install](https://github.com/dogancelik/irccloud-twitch-emoticons/raw/master/build/twitch_emoticons.user.js)
+#### [Click here to install](https://github.com/dogancelik/irccloud-twitch-emoticons/raw/master/build/twitch_emoticons.user.js)
+**Note: Right now only supported browser is: Firefox with Greasemonkey**
 
 ## Features
 * Twitch.TV global emoticons
