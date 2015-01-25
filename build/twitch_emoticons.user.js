@@ -3,7 +3,7 @@
 // @namespace   dogancelik.com
 // @description Enables Twitch emoticons in IRCCloud
 // @include     https://www.irccloud.com/*
-// @version     1.0.0
+// @version     1.0.1
 // @grant       none
 // @updateURL   https://github.com/dogancelik/irccloud-twitch-emoticons/raw/master/build/twitch_emoticons.meta.js
 // @downloadURL https://github.com/dogancelik/irccloud-twitch-emoticons/raw/master/build/twitch_emoticons.user.js
@@ -15,7 +15,7 @@
 
 var emoteUrl = '//cdn.rawgit.com/dogancelik/irccloud-twitch-emoticons/master/build/emotes.all.json';
 var loadedEmotes = {};
-var templateTwitch = '<img src="//static-cdn.jtvnw.net/emoticons/v1/:id/1.0" alt=":name" title=":name">'
+var templateTwitch = '<img src="//static-cdn.jtvnw.net/emoticons/v1/:id/1.0" alt=":name" title=":name">';
 var templateBetterttv = '<img src=":src" alt=":name" title=":name">';
 
 // Instead of reading settings every time we process an element, we cache the settings here
