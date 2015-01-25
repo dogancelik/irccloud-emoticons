@@ -1,0 +1,45 @@
+#te-bar
+  color #C0DBFF
+  float right
+  
+  &::after
+    content "\\00a0|\\00a0"
+  
+  a
+    cursor pointer
+
+#te-container
+  font-size 18px
+  display none
+
+#te-sets
+  label > span
+    &::after
+      content " emotes)"
+
+    &::before
+      content "("
+
+#te-whitelist-box
+  font-size 12px
+
+#te-donate
+  font-weight bold
+  
+  > *
+    vertical-align top
+
+#te-enabled-label
+  font-weight normal
+
+#te-enabled-check:not(:checked) ~ #te-enabled-label
+  color red
+
+  &::after
+    content "Not enabled"
+
+#te-enabled-check:checked ~ #te-enabled-label
+  color green
+
+  &::after
+    content "Enabled"

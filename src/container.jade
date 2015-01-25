@@ -1,0 +1,59 @@
+#teContainer.accountContainer
+  button.close(type='button')
+    span Close
+  h2#te-main-header
+    span Twitch Emoticons&nbsp;
+    input#te-enabled-check(type='checkbox')
+    | &nbsp;
+    label#te-enabled-label(for='te-enabled-check')
+  p.explanation Type your text as you normally would, the script will automatically add emoticons to the messages.
+  p.explanation: a#te-reload(href='javascript:void(0)') Click here to load the latest emoticons file
+  p.explanation After you change a setting, you need to click the <i>Close</i> button and reload the page.
+  h2 What to Watch?
+  table.checkboxForm
+    tr
+      td: input#te-enabled-messages-all(type='radio', name='watch', disabled='disabled')
+      th: label(for='te-enabled-messages-all') Watch all messages (including history)
+    tr
+      td: input#te-enabled-messages-new(type='radio', name='watch')
+      th: label(for='te-enabled-messages-new') Watch new messages only  
+  h2 Emoticon Sets
+  table#te-sets.checkboxForm
+    tr
+      td: input#te-enabled-global(type='checkbox')
+      th: label(for='te-enabled-global') Global emoticons&nbsp;
+        span
+    tr
+      td: input#te-enabled-subscriber(type='checkbox')
+      th
+        label(for='te-enabled-subscriber') Subscriber emoticons&nbsp;
+          span
+        div#te-whitelist-box
+          input#te-whitelist-input(type='text', placeholder='Channel whitelist')
+          br
+          span.explanation leave empty if you want all subscriber emoticons; seperate channels with a comma
+    tr
+      td: input#te-enabled-betterttv(type='checkbox')
+      th: label(for='te-enabled-betterttv') BetterTTV emoticons&nbsp;
+        span
+  h2 Emoticon Size
+  table.form
+    tr
+      th
+        label(for='te-image-width') Width
+        span.explanation &nbsp;(optional)
+      td: input.input#te-image-width(type='text')
+    tr
+      th
+        label(for='te-image-height') Height
+        span.explanation &nbsp;(optional)
+      td: input.input#te-image-height(type='text')
+  hr
+  p#te-donate.explanation
+    | If you like this script, please 
+    a(href='https://flattr.com/submit/auto?user_id=dogancelik&url=https%3A%2F%2Fgithub.com%2Fdogancelik%2Firccloud-twitch-emoticons', target='_blank')
+      img(border='0', src='//api.flattr.com/button/flattr-badge-large.png', alt='Flattr this', title='Flattr this')
+    | &nbsp;or help me via Gratipay: &nbsp;
+    script(data-gratipay-username='dogancelik', data-gratipay-widget='button', src='//grtp.co/v1.js')
+  p.explanation
+    a(href='https://github.com/dogancelik/irccloud-twitch-emoticons', target='_blank') Source code

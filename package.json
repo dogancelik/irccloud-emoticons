@@ -1,0 +1,13 @@
+{
+  "name": "irccloud-twitch-emoticons",
+  "private": true,
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-concat": "^2.4.3",
+    "gulp-jade": "^0.11.0",
+    "gulp-preprocess": "^1.2.0",
+    "gulp-stylus": "^2.0.0",
+    "needle": "^0.7.10",
+    "q": "^1.1.2"
+  }
+}
