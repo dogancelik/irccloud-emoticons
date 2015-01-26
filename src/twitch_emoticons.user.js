@@ -209,7 +209,7 @@ function init() {
     spans.eq(1).append($("<code>").text(countSubEmote('subscriber')));
     spans.eq(2).append($("<code>").text(Object.keys(loadedEmotes.betterttv).length));
     
-    subscriberWhitelist = Settings.get('emote.subscriber.whitelist').trim().split(',').map(String.trim).filter(function(i){ return i !== ""; });
+    subscriberWhitelist = Settings.get('emote.subscriber.whitelist').trim().toLowerCase().split(',').map(String.trim).filter(function(i){ return i !== ""; });
     imageWidth = Settings.get('image.width') || null;
     imageHeight = Settings.get('image.height') || null;
     emoteEnabledGlobal = JSON.parse(Settings.get('emote.global.enabled'));
