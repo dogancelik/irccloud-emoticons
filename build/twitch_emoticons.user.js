@@ -3,7 +3,7 @@
 // @namespace   dogancelik.com
 // @description Enables Twitch emoticons in IRCCloud
 // @include     https://www.irccloud.com/*
-// @version     1.0.3
+// @version     1.0.4
 // @grant       none
 // @updateURL   https://github.com/dogancelik/irccloud-twitch-emoticons/raw/master/build/twitch_emoticons.meta.js
 // @downloadURL https://github.com/dogancelik/irccloud-twitch-emoticons/raw/master/build/twitch_emoticons.user.js
@@ -219,7 +219,8 @@ function init() {
     spans.eq(1).append($("<code>").text(countSubEmote('subscriber')));
     spans.eq(2).append($("<code>").text(Object.keys(loadedEmotes.betterttv).length));
     
-    subscriberWhitelist = Settings.get('emote.subscriber.whitelist').trim().toLowerCase().split(',').map(String.trim).filter(function(i){ return i !== ""; });
+    // Chrome can't into .map(String.trim)
+    subscriberWhitelist = Settings.get('emote.subscriber.whitelist').trim().toLowerCase().split(',').map(function(i) { return i.trim(); }).filter(function(i){ return i !== ""; });
     imageWidth = Settings.get('image.width') || null;
     imageHeight = Settings.get('image.height') || null;
     emoteEnabledGlobal = JSON.parse(Settings.get('emote.global.enabled'));
