@@ -168,7 +168,7 @@ function init() {
   radiosWatch.on('change', function() {
     Settings.set('watch.mode', radiosWatch.index(this));
   });
-  radiosWatch.eq(Settings.get('watch.mode'), 1).prop('checked', true);
+  radiosWatch.eq(Settings.get('watch.mode', 1)).prop('checked', true);
 
   container.find('#te-enabled-global').on('change', function() {
     Settings.set('emote.global.enabled', this.checked);

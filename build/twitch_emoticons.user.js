@@ -3,7 +3,7 @@
 // @namespace   dogancelik.com
 // @description Enables Twitch emoticons in IRCCloud
 // @include     https://www.irccloud.com/*
-// @version     1.0.4
+// @version     1.0.5
 // @grant       none
 // @updateURL   https://github.com/dogancelik/irccloud-twitch-emoticons/raw/master/build/twitch_emoticons.meta.js
 // @downloadURL https://github.com/dogancelik/irccloud-twitch-emoticons/raw/master/build/twitch_emoticons.user.js
@@ -178,7 +178,7 @@ function init() {
   radiosWatch.on('change', function() {
     Settings.set('watch.mode', radiosWatch.index(this));
   });
-  radiosWatch.eq(Settings.get('watch.mode'), 1).prop('checked', true);
+  radiosWatch.eq(Settings.get('watch.mode', 1)).prop('checked', true);
 
   container.find('#te-enabled-global').on('change', function() {
     Settings.set('emote.global.enabled', this.checked);
