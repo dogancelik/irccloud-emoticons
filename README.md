@@ -8,8 +8,8 @@ Enables [Twitch.TV](http://www.twitch.tv/) emoticons in [IRCCloud](https://www.i
 Supported browsers: Firefox with Greasemonkey and Chrome with Tampermonkey
 
 ## Features
-* Twitch.TV global & subscriber emoticons
-* [BetterTTV emoticons](https://nightdev.com/betterttv/faces.php)
+* Twitch.TV global & subscriber emoticons (22.000+ emotes)
+* [BetterTTV emoticons](https://nightdev.com/betterttv/faces.php) (90+ emotes)
 
 ## How to use:
 Same as you do in Twitch chat. Just type Grey Face (no space) and you will get ![Grey Face](extras/greyface.png)
