@@ -8,7 +8,7 @@ Enables [Twitch.TV](http://www.twitch.tv/) emoticons in [IRCCloud](https://www.i
 Supported browsers: Firefox with Greasemonkey and Chrome with Tampermonkey
 
 ## Features
-* Twitch.TV global emoticons
+* Twitch.TV global & subscriber emoticons
 * [BetterTTV emoticons](https://nightdev.com/betterttv/faces.php)
 
 ## How to use:
