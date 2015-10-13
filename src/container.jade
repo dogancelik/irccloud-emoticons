@@ -1,7 +1,5 @@
-#te-container.accountContainer
-  button.close(type='button')
-    span Close
-  h2#te-main-header
+#te-container.settingsContents.settingsContents__twitchemoticons(data-section='twitchemoticons')
+  h2#te-main-header.settingsTitle
     span Twitch Emoticons&nbsp;
     input#te-enabled-check(type='checkbox')
     | &nbsp;
@@ -9,7 +7,7 @@
   p.explanation Type your text as you normally would, the script will automatically add emoticons to the messages.
   p.explanation: a#te-reload(href='javascript:void(0)') Click here to load the latest emoticons file
   p.explanation After you change a setting, you need to click the <i>Close</i> button and reload the page.
-  h2 What to Watch?
+  h3 What to Watch?
   table.checkboxForm
     tr
       td: input#te-enabled-messages-all(type='radio', name='watch', disabled='disabled')
@@ -17,7 +15,7 @@
     tr
       td: input#te-enabled-messages-new(type='radio', name='watch')
       th: label(for='te-enabled-messages-new') Watch new messages only  
-  h2 Emoticon Sets
+  h3 Emoticon Sets
   table#te-sets.checkboxForm
     tr
       td: input#te-enabled-global(type='checkbox')
@@ -36,7 +34,7 @@
       td: input#te-enabled-betterttv(type='checkbox')
       th: label(for='te-enabled-betterttv') BetterTTV emoticons&nbsp;
         span
-  h2 Emoticon Size
+  h3 Emoticon Size
   table.form
     tr
       th
@@ -50,10 +48,8 @@
       td: input.input#te-image-height(type='text')
   hr
   p#te-donate.explanation
-    | If you like this script, please 
-    a(href='https://flattr.com/submit/auto?user_id=dogancelik&url=https%3A%2F%2Fgithub.com%2Fdogancelik%2Firccloud-twitch-emoticons', target='_blank') Flattr it
-    | &nbsp;or help me via&nbsp;
-    a(href='https://gratipay.com/dogancelik/', target='_blank') Gratipay  
+    | If you like this script, please&nbsp;
+    a(href='http://dogancelik.com/donate.html', target='_blank') consider a donation
   p.explanation
     a(href='https://github.com/dogancelik/irccloud-twitch-emoticons', target='_blank') Source code
     | &nbsp;-&nbsp;

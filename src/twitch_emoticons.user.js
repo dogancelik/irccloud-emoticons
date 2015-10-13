@@ -38,12 +38,12 @@ function embedStyle() {
   document.head.appendChild(style);
 }
   
-function createMenu(itemId, itemClass, itemName) {
-  return $('<div id="' + itemId + '"><a>' + itemName + '</a></div>').addClass(itemClass).insertAfter('#statusActions');
+function createMenu() {
+  return $('<div id="te-bar" class="settingsMenu__item settingsMenu__item__twitchemoticons"><a class="settingsMenu__link" href="#?/settings=twitchemoticons">Twitch Emoticons</a></div>').insertAfter('.settingsContainer .settingsMenu .settingsMenu__item:last');
 }
   
 function createContainer() {
-  return $('/* @include ../build/container.html */').insertAfter($('#upgradeContainer'));
+  return $('/* @include ../build/container.html */').insertAfter('.settingsContentsWrapper .settingsContents:last');
 }
 
 function loadEmotes(url, callback) {
@@ -153,6 +153,13 @@ function bindMessages() {
 function init() {
   embedStyle();
 
+  var menu = createMenu();
+
+  if (window.location.hash === '#?/settings=twitchemoticons') {
+    window.location.hash = '#?/settings';
+    menu.find('a')[0].click();
+  }
+
   var container = createContainer();
   
   container.find('#te-enabled-check').on('change', function() {
@@ -193,15 +200,6 @@ function init() {
   container.find('#te-image-height').on('change', function() {
     Settings.set('image.height', this.value);
   }).val(Settings.get('image.height', ''));
-  
-  container.find('.close').on('click', function() {
-    container.fadeOut();
-  });
-  
-  var menu = createMenu('te-bar', 'te-menu', 'Twitch Emoticons');
-  menu.children('a').on('click', function() {
-    container.fadeIn();
-  });
   
   loadEmotes(emoteUrl, function() {
     var spans = container.find('#te-sets label > span');
