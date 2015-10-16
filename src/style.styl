@@ -1,5 +1,17 @@
 #te-container
   font-size 18px
+  
+.te-success, .te-error
+  font-weight bold
+
+.te-result
+  display none
+  
+  &.userSuccess, &.userError
+    display block
+    
+.te-bold
+  font-weight bold
 
 #te-sets
   label > span
@@ -8,9 +20,6 @@
 
     &::before
       content "("
-
-#te-whitelist-box
-  font-size 12px
 
 #te-donate
   font-weight bold

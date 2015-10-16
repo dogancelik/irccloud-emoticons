@@ -5,16 +5,20 @@
     | &nbsp;
     label#te-enabled-label(for='te-enabled-check')
   p.explanation Type your text as you normally would, the script will automatically add emoticons to the messages.
-  p.explanation: a#te-reload(href='javascript:void(0)') Click here to load the latest emoticons file
-  p.explanation After you change a setting, you need to click the <i>Close</i> button and reload the page.
+  p.explanation
+    a#te-reload(href='javascript:void(0)') Click here to load the latest emoticons file
+    | &nbsp;or&nbsp;
+    a#te-reset(href='javascript:void(0)') click here to reset Twitch Emoticons completely
+  div#te-result.te-result
+  p.te-bold.explanation After you change a setting, you need to click <i>Cancel</i> or <i>Save</i> button and reload the page.
   h3 What to Watch?
   table.checkboxForm
     tr
-      td: input#te-enabled-messages-all(type='radio', name='watch', disabled='disabled')
+      td: input#te-enabled-messages-all(type='radio', name='watch')
       th: label(for='te-enabled-messages-all') Watch all messages (including history)
     tr
       td: input#te-enabled-messages-new(type='radio', name='watch')
-      th: label(for='te-enabled-messages-new') Watch new messages only  
+      th: label(for='te-enabled-messages-new') Watch new messages only
   h3 Emoticon Sets
   table#te-sets.checkboxForm
     tr
@@ -29,7 +33,8 @@
         div#te-whitelist-box
           input#te-whitelist-input(type='text', placeholder='Channel whitelist')
           br
-          span.explanation leave empty if you want all subscriber emoticons; seperate channels with a comma
+          span.explanation Leave empty if you want all subscriber emoticons; seperate channels with a comma.
+        span.explanation Use a whitelist if you are using <i>Watch all messages</i> option otherwise it may lag.
     tr
       td: input#te-enabled-betterttv(type='checkbox')
       th: label(for='te-enabled-betterttv') BetterTTV emoticons&nbsp;
