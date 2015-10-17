@@ -4,9 +4,10 @@
 'use strict';
 
 var emoteUrl = '//cdn.rawgit.com/dogancelik/irccloud-twitch-emoticons/master/build/emotes.all.json';
+var emoteRefreshInterval = 86400000; // 1 day in milliseconds
 var loadedEmotes = {};
 var templateTwitch = '<img src="//static-cdn.jtvnw.net/emoticons/v1/:id/1.0" alt=":name" title=":name">';
-var templateBetterttv = '<img src=":src" alt=":name" title=":name">';
+var templateBetterttv = '<img src="//cdn.betterttv.net/emote/:src/1x" alt=":name" title=":name">';
 
 // Instead of reading settings every time we process an element, we cache the settings here
 var subscriberWhitelist = [];
@@ -19,6 +20,7 @@ var emoteEnabledBetterttv = null;
 // Settings names
 var TE_ENABLED = 'enabled';
 var TE_DATA = 'emote.data';
+var TE_REFRESH = 'emote.data.date';
 var TE_WATCH = 'watch.mode';
 var TE_GLOBAL = 'emote.global.enabled';
 var TE_SUB = 'emote.subscriber.enabled';
@@ -65,10 +67,37 @@ function createContainer() {
 
 function loadEmotes(url, callback) {
   var setData = Settings.get(TE_DATA, '');
-  if (setData == '') {
-    $.getJSON(url, function (data) {    
+
+  var dateNow = JSON.stringify(Date.now());
+
+  function getDate() {
+    return parseInt(Settings.get(TE_REFRESH, dateNow), 10);
+  }
+
+  function isValidDate(dateObj) {
+    if (dateObj instanceof Date) {
+      if (isNaN(dateObj.getTime())) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  var refreshDate = new Date(getDate() + emoteRefreshInterval);
+  if (isValidDate(refreshDate) === false) {
+    Settings.set(TE_REFRESH, dateNow);
+    refreshDate = new Date(getDate() + emoteRefreshInterval);
+  }
+  var needRefresh = Date.now() > refreshDate.getTime();
+
+  if (setData == '' || needRefresh === true) {
+    $.getJSON(url, function (data) {
       loadedEmotes = data;
       Settings.set(TE_DATA, JSON.stringify(data));
+      Settings.set(TE_REFRESH, dateNow); // not necessary
       callback(data);
     });
   } else {

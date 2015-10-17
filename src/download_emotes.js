@@ -14,7 +14,7 @@ var q = require('q');
 var apiUrl = {
   global: 'https://twitchemotes.com/api_cache/v2/global.json',
   subscriber: 'https://twitchemotes.com/api_cache/v2/subscriber.json',
-  betterttv: 'https://cdn.betterttv.net/emotes/emotes.json'
+  betterttv: 'https://api.betterttv.net/2/emotes'
 };
 
 function download(url, callback) {
@@ -52,10 +52,10 @@ function parseSubscriber(obj) {
 
 function parseBetterttv(obj) {
   var newObj = {}, i, key = '', value = '';
-  for (i = 0; i < obj.length; i += 1) {
-    key = obj[i].regex;
-    value = obj[i].url;
-    newObj[key] = value;
+  if (obj.hasOwnProperty('emotes')) {
+    obj.emotes.forEach(function (emote) {
+      newObj[emote.code] = emote.id;
+    });
   }
   return newObj;
 }
