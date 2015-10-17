@@ -3,7 +3,7 @@
 (function () {
 'use strict';
 
-var emoteUrl = '//cdn.rawgit.com/dogancelik/irccloud-twitch-emoticons/master/build/emotes.all.json';
+var defaultEmoteUrl = '//cdn.rawgit.com/dogancelik/irccloud-twitch-emoticons/v2.2.0/build/emotes.all.json';
 var emoteRefreshInterval = 86400000; // 1 day in milliseconds
 var loadedEmotes = {};
 var templateTwitch = '<img src="//static-cdn.jtvnw.net/emoticons/v1/:id/1.0" alt=":name" title=":name">';
@@ -19,6 +19,7 @@ var emoteEnabledBetterttv = null;
 
 // Settings names
 var TE_ENABLED = 'enabled';
+var TE_URL = 'emote.data.url';
 var TE_DATA = 'emote.data';
 var TE_REFRESH = 'emote.data.date';
 var TE_WATCH = 'watch.mode';
@@ -106,19 +107,21 @@ function loadEmotes(url, callback) {
     callback(setJson);
   }
 }
-  
+
+function escapeRegExp(str){
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 function getWordRegex(key, opts) {
   if (typeof opts === 'undefined') {
-    var opts = 'g';
-  } else if (opts === false || opts === null) {
-    opts = '';
+    opts = 'g';
   }
-  return new RegExp('\\b' + key + '\\b', opts);
+  return new RegExp('\\b' + escapeRegExp(key) + '\\b', opts);
 }
 
 function loopTextNodes(el, key, img, rgx) {
   if (typeof rgx === 'undefined') {
-    var rgx = getWordRegex(key, false);
+    var rgx = getWordRegex(key, '');
   }
   Array.prototype.slice.call(el.childNodes).forEach(function(node) {
     if (node.nodeType === Node.TEXT_NODE) {
@@ -335,6 +338,7 @@ function init() {
     Settings.set(TE_HEIGHT, this.value);
   }).val(Settings.get(TE_HEIGHT, ''));
   
+  var emoteUrl = Settings.get(TE_URL, defaultEmoteUrl);
   loadEmotes(emoteUrl, function() {
     var spans = container.find('#te-sets label > span');
     spans.eq(0).append($('<code>').text(Object.keys(loadedEmotes.global).length));
@@ -354,7 +358,7 @@ function init() {
     }
   });
 }
-  
+
 (function checkSession () {
   if (window.hasOwnProperty('SESSION')) {
     window.SESSION.bind('init', function () {
