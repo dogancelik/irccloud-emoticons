@@ -3,7 +3,7 @@
 // @namespace   dogancelik.com
 // @description Enables Twitch emoticons in IRCCloud
 // @include     https://www.irccloud.com/*
-// @version     2.3.0
+// @version     2.3.1
 // @grant       none
 // @updateURL   https://github.com/dogancelik/irccloud-twitch-emoticons/raw/master/build/twitch_emoticons.meta.js
 // @downloadURL https://github.com/dogancelik/irccloud-twitch-emoticons/raw/master/build/twitch_emoticons.user.js
@@ -65,7 +65,7 @@ var Settings = {
 function embedStyle() {
   var style = document.createElement('style');
   style.type = 'text/css';
-  style.innerHTML = '#te-container{font-size:18px}.te-success,.te-error{font-weight:bold}.te-result{display:none;}.te-result.userSuccess,.te-result.userError{display:block}.te-bold{font-weight:bold}#te-sets label > span::after{content:" emotes)"}#te-sets label > span::before{content:"("}#te-donate{font-weight:bold;}#te-donate > *{vertical-align:top}#te-enabled-label{font-weight:normal}#te-enabled-check:not(:checked) ~ #te-enabled-label{color:#f00;}#te-enabled-check:not(:checked) ~ #te-enabled-label::after{content:"Not enabled"}#te-enabled-check:checked ~ #te-enabled-label{color:#008000;}#te-enabled-check:checked ~ #te-enabled-label::after{content:"Enabled"}';
+  style.innerHTML = '#te-container{font-size:18px}#te-actions span{padding:2px 10px !important}.te-result{display:none;}.te-result.userSuccess,.te-result.userError{display:block}.te-bold{font-weight:bold}#te-sets label > span::after{content:" emotes)"}#te-sets label > span::before{content:"("}#te-donate{font-weight:bold;}#te-donate > *{vertical-align:top}#te-enabled-label{font-weight:normal}#te-enabled-check:not(:checked) ~ #te-enabled-label{color:#f00;}#te-enabled-check:not(:checked) ~ #te-enabled-label::after{content:"Not enabled"}#te-enabled-check:checked ~ #te-enabled-label{color:#008000;}#te-enabled-check:checked ~ #te-enabled-label::after{content:"Enabled"}';
   document.head.appendChild(style);
 }
   
@@ -74,7 +74,7 @@ function createMenu() {
 }
   
 function createContainer() {
-  return $('<div id="te-container" data-section="twitchemoticons" class="settingsContents settingsContents__twitchemoticons"><h2 id="te-main-header" class="settingsTitle"><span>Twitch Emoticons&nbsp;</span><input id="te-enabled-check" type="checkbox"/>&nbsp;<label id="te-enabled-label" for="te-enabled-check"></label></h2><p class="explanation">Type your text as you normally would, the script will automatically add emoticons to the messages.</p><p class="explanation"><a id="te-reload" href="javascript:void(0)">Click here to load the latest emoticons file</a>&nbsp;or&nbsp;<a id="te-reset" href="javascript:void(0)">click here to reset Twitch Emoticons completely</a></p><div id="te-result" class="te-result"></div><p class="te-bold explanation">After you change a setting, you need to click <i>Cancel</i> or <i>Save</i> button and reload the page.</p><h3>What to Watch?</h3><table class="checkboxForm"><tr><td><input id="te-enabled-messages-all" type="radio" name="watch"/></td><th><label for="te-enabled-messages-all">Watch all messages (including history)</label></th></tr><tr><td><input id="te-enabled-messages-new" type="radio" name="watch"/></td><th><label for="te-enabled-messages-new">Watch new messages only</label></th></tr></table><h3>Emoticon Sets</h3><table id="te-sets" class="checkboxForm"><tr><td><input id="te-enabled-global" type="checkbox"/></td><th><label for="te-enabled-global">Global emoticons&nbsp;<span></span></label></th></tr><tr><td><input id="te-enabled-subscriber" type="checkbox"/></td><th><label for="te-enabled-subscriber">Subscriber emoticons&nbsp;<span></span></label><div id="te-whitelist-box"><input id="te-whitelist-input" type="text" placeholder="Channel whitelist"/><br/><span class="explanation">Leave empty if you want all subscriber emoticons; seperate channels with a comma.</span></div><span class="explanation">Use a whitelist if you are using <i>Watch all messages</i> option otherwise it may lag.</span></th></tr><tr><td><input id="te-enabled-betterttv" type="checkbox"/></td><th><label for="te-enabled-betterttv">BetterTTV emoticons&nbsp;<span></span></label></th></tr></table><h3>Emoticon Size</h3><table class="form"><tr><th><label for="te-image-width">Width</label><span class="explanation">&nbsp;(optional)</span></th><td><input id="te-image-width" type="text" class="input"/></td></tr><tr><th><label for="te-image-height">Height</label><span class="explanation">&nbsp;(optional)</span></th><td><input id="te-image-height" type="text" class="input"/></td></tr></table><hr/><p id="te-donate" class="explanation">If you like this script, please&nbsp;<a href="http://dogancelik.com/donate.html" target="_blank">consider a donation</a></p><p class="explanation"><a href="https://github.com/dogancelik/irccloud-twitch-emoticons" target="_blank">Source code</a>&nbsp;-&nbsp;<a href="https://github.com/dogancelik/irccloud-twitch-emoticons/issues" target="_blank">Report bug / Request feature</a></p></div>').insertAfter('.settingsContentsWrapper .settingsContents:last');
+  return $('<div id="te-container" data-section="twitchemoticons" class="settingsContents settingsContents__twitchemoticons"><h2 id="te-main-header" class="settingsTitle"><span>Twitch Emoticons&nbsp;</span><input id="te-enabled-check" type="checkbox"/>&nbsp;<label id="te-enabled-label" for="te-enabled-check"></label></h2><p class="explanation">Type your text as you normally would, the script will automatically add emoticons to the messages.</p><div id="te-actions"><button id="te-reload"><span>Load the latest emoticons file</span></button><button id="te-reset"><span>Reset Twitch Emoticons completely</span></button></div><div id="te-result" class="te-result"></div><p class="te-bold explanation">After you change a setting, you need to click <i>Cancel</i> or <i>Save</i> button and reload the page.</p><h3>What to Watch?</h3><table class="checkboxForm"><tr><td><input id="te-enabled-messages-all" type="radio" name="watch"/></td><th><label for="te-enabled-messages-all">Watch all messages (including history)</label></th></tr><tr><td><input id="te-enabled-messages-new" type="radio" name="watch"/></td><th><label for="te-enabled-messages-new">Watch new messages only</label></th></tr></table><h3>Emoticon Sets</h3><table id="te-sets" class="checkboxForm"><tr><td><input id="te-enabled-global" type="checkbox"/></td><th><label for="te-enabled-global">Global emoticons&nbsp;<span></span></label></th></tr><tr><td><input id="te-enabled-subscriber" type="checkbox"/></td><th><label for="te-enabled-subscriber">Subscriber emoticons&nbsp;<span></span></label><div id="te-whitelist-box"><input id="te-whitelist-input" type="text" placeholder="Channel whitelist"/><br/><span class="explanation">Leave empty if you want all subscriber emoticons; seperate channels with a comma.</span></div><span class="explanation">Use a whitelist if you are using <i>Watch all messages</i> option otherwise it may lag.</span></th></tr><tr><td><input id="te-enabled-betterttv" type="checkbox"/></td><th><label for="te-enabled-betterttv">BetterTTV emoticons&nbsp;<span></span></label></th></tr></table><h3>Emoticon Size</h3><table class="form"><tr><th><label for="te-image-width">Width</label><span class="explanation">&nbsp;(optional)</span></th><td><input id="te-image-width" type="text" class="input"/></td></tr><tr><th><label for="te-image-height">Height</label><span class="explanation">&nbsp;(optional)</span></th><td><input id="te-image-height" type="text" class="input"/></td></tr></table><hr/><p id="te-donate" class="explanation">If you like this script, please&nbsp;<a href="http://dogancelik.com/donate.html" target="_blank">consider a donation</a></p><p class="explanation"><a href="https://github.com/dogancelik/irccloud-twitch-emoticons" target="_blank">Source code</a>&nbsp;-&nbsp;<a href="https://github.com/dogancelik/irccloud-twitch-emoticons/issues" target="_blank">Report bug / Request feature</a></p></div>').insertAfter('.settingsContentsWrapper .settingsContents:last');
 }
 
 function loadEmotes(url, callback) {
@@ -282,13 +282,13 @@ function init() {
   embedStyle();
 
   var menu = createMenu();
-
-  if (window.location.hash === '#?/settings=twitchemoticons') {
-    window.location.hash = '#?/settings';
-    menu.find('a')[0].click();
-  }
-
   var container = createContainer();
+
+  var hashName = 'twitchemoticons';
+  if (window.location.hash === '#?/settings=' + hashName) {
+    SESSIONVIEW.showSettings(hashName);
+  }
+  
   var result = container.find('#te-result');
   
   container.find('#te-enabled-check').on('change', function() {

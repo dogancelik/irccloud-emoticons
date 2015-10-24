@@ -271,13 +271,13 @@ function init() {
   embedStyle();
 
   var menu = createMenu();
-
-  if (window.location.hash === '#?/settings=twitchemoticons') {
-    window.location.hash = '#?/settings';
-    menu.find('a')[0].click();
-  }
-
   var container = createContainer();
+
+  var hashName = 'twitchemoticons';
+  if (window.location.hash === '#?/settings=' + hashName) {
+    SESSIONVIEW.showSettings(hashName);
+  }
+  
   var result = container.find('#te-result');
   
   container.find('#te-enabled-check').on('change', function() {

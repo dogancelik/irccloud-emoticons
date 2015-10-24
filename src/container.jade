@@ -5,10 +5,9 @@
     | &nbsp;
     label#te-enabled-label(for='te-enabled-check')
   p.explanation Type your text as you normally would, the script will automatically add emoticons to the messages.
-  p.explanation
-    a#te-reload(href='javascript:void(0)') Click here to load the latest emoticons file
-    | &nbsp;or&nbsp;
-    a#te-reset(href='javascript:void(0)') click here to reset Twitch Emoticons completely
+  div#te-actions
+    button#te-reload: span Load the latest emoticons file
+    button#te-reset: span Reset Twitch Emoticons completely
   div#te-result.te-result
   p.te-bold.explanation After you change a setting, you need to click <i>Cancel</i> or <i>Save</i> button and reload the page.
   h3 What to Watch?
