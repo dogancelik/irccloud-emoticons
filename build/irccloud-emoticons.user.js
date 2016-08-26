@@ -4,7 +4,7 @@
 // @description Enables Twitch emoticons and more in IRCCloud
 // @icon        https://cdn.rawgit.com/irccloud-ext/graphics/master/emoticon-128.png
 // @include     https://www.irccloud.com/*
-// @version     3.0.2
+// @version     3.0.3
 // @grant       none
 // @updateURL   https://github.com/dogancelik/irccloud-emoticons/raw/dev/build/irccloud-emoticons.meta.js
 // @downloadURL https://github.com/dogancelik/irccloud-emoticons/raw/dev/build/irccloud-emoticons.user.js
@@ -70,7 +70,7 @@ function createMenu() {
 }
 
 function createContainer() {
-  return $('<div id="te-container" data-section="twitchemoticons" class="settingsContents settingsContents__twitchemoticons"><h2 id="te-main-header" class="settingsTitle"><span><i>Emoticons</i></span>&nbsp;<input id="te-enabled-check" type="checkbox"/>&nbsp;<label id="te-enabled-label" for="te-enabled-check"></label></h2><p class="explanation">Type your text as you normally would, the script will automatically add emoticons to the messages.</p><div id="te-actions"><button id="te-reload"><span>Load the latest emoticons file</span></button><button id="te-reset"><span>Reset <i>Emoticons</i> completely</span></button></div><div id="te-result" class="te-result"></div><p class="te-bold explanation">After you change a setting, you need to click <i>Cancel</i> or <i>Save</i> button and reload the page.</p><h3>What to Watch?</h3><table class="checkboxForm"><tr><td><input id="te-enabled-messages-all" type="radio" name="watch"/></td><th><label for="te-enabled-messages-all">Watch all messages (including history)</label></th></tr><tr><td><input id="te-enabled-messages-new" type="radio" name="watch"/></td><th><label for="te-enabled-messages-new">Watch new messages only</label></th></tr></table><h3>Emoticon Sets</h3><p class="form"><label for="te-packs-active">Active Packs</label></p><p class="form"><textarea id="te-packs-active" class="input settings__inputSetting"></textarea></p><p class="form"><span>Loaded Packs:&nbsp;</span><span id="te-packs-loaded"></span></p><h3>Emoticon Size</h3><table class="form"><tr><th><label for="te-image-width">Width</label><span class="explanation">&nbsp;(optional)</span></th><td><input id="te-image-width" type="text" class="input"/></td></tr><tr><th><label for="te-image-height">Height</label><span class="explanation">&nbsp;(optional)</span></th><td><input id="te-image-height" type="text" class="input"/></td></tr></table><hr/><p id="te-donate" class="explanation">If you like this script, please&nbsp;<a href="http://dogancelik.com/donate.html" target="_blank">consider a donation</a></p><p class="explanation"><a href="https://github.com/dogancelik/irccloud-emoticons" target="_blank">Source code</a>&nbsp;-&nbsp;<a href="https://github.com/dogancelik/irccloud-emoticons/issues" target="_blank">Report bug / Request feature</a></p></div>').insertAfter('.settingsContentsWrapper .settingsContents:last');
+  return $('<div id="te-container" data-section="twitchemoticons" class="settingsContents settingsContents__twitchemoticons"><h2 id="te-main-header" class="settingsTitle"><span><i>Emoticons</i></span>&nbsp;<input id="te-enabled-check" type="checkbox"/>&nbsp;<label id="te-enabled-label" for="te-enabled-check"></label></h2><p class="explanation">Type your text as you normally would, the script will automatically add emoticons to the messages.</p><div id="te-actions"><button id="te-reload"><span>Load the latest emoticons file</span></button><button id="te-reset"><span>Reset <i>Emoticons</i> completely</span></button></div><div id="te-result" class="te-result"></div><p class="te-bold explanation">After you change a setting, you need to click <i>Cancel</i> or <i>Save</i> button and reload the page.</p><h3>What to Watch?</h3><table class="checkboxForm"><tr><td><input id="te-enabled-messages-all" type="radio" name="watch"/></td><th><label for="te-enabled-messages-all">Watch all messages (including history)</label></th></tr><tr><td><input id="te-enabled-messages-new" type="radio" name="watch"/></td><th><label for="te-enabled-messages-new">Watch new messages only</label></th></tr></table><h3>Emoticon Sets</h3><p class="form"><label for="te-packs-active">Active Packs</label></p><p class="form"><textarea id="te-packs-active" class="input settings__inputSetting"></textarea></p><p class="form"><span>Loaded Packs:&nbsp;</span><span id="te-packs-loaded"></span></p><p class="form"><span>Failed Packs:&nbsp;</span><span id="te-packs-failed"></span></p><h3>Emoticon Size</h3><table class="form"><tr><th><label for="te-image-width">Width</label><span class="explanation">&nbsp;(optional)</span></th><td><input id="te-image-width" type="text" class="input"/></td></tr><tr><th><label for="te-image-height">Height</label><span class="explanation">&nbsp;(optional)</span></th><td><input id="te-image-height" type="text" class="input"/></td></tr></table><hr/><p id="te-donate" class="explanation">If you like this script, please&nbsp;<a href="http://dogancelik.com/donate.html" target="_blank">consider a donation</a></p><p class="explanation"><a href="https://github.com/dogancelik/irccloud-emoticons" target="_blank">Source code</a>&nbsp;-&nbsp;<a href="https://github.com/dogancelik/irccloud-emoticons/issues" target="_blank">Report bug / Request feature</a></p></div>').insertAfter('.settingsContentsWrapper .settingsContents:last');
 }
 
 function loadPacks(urls, callback) {
@@ -132,6 +132,7 @@ function loadPacks(urls, callback) {
         data.downloadDate = dateNow;
         return data;
       }, function () {
+        failedPacks.push(url);
         return $.Deferred().resolve(false).promise();
       });
     } else {
@@ -341,10 +342,15 @@ function init() {
   loadPacks(packsToLoad, function() {
     console.log('Loaded packs:', loadedPacks);
     var $loaded = container.find('#te-packs-loaded');
+    var $failed = container.find('#te-packs-failed');
 
     $loaded.append(Object.keys(loadedPacks).map(function (name) {
       var count = loadedPacks[name].icons.length;
       return '<span><i>' + name + '</i> (<code>' + count +'</code>)</span>';
+    }).join(', '));
+
+    $failed.append(failedPacks.map(function (url) {
+      return '<code>' + url.replace(defaultDomain, '<i>(default domain)</i>') + '</code>';
     }).join(', '));
 
     imageWidth = Settings.get(TE_WIDTH) || null;

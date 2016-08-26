@@ -121,6 +121,7 @@ function loadPacks(urls, callback) {
         data.downloadDate = dateNow;
         return data;
       }, function () {
+        failedPacks.push(url);
         return $.Deferred().resolve(false).promise();
       });
     } else {
@@ -330,10 +331,15 @@ function init() {
   loadPacks(packsToLoad, function() {
     console.log('Loaded packs:', loadedPacks);
     var $loaded = container.find('#te-packs-loaded');
+    var $failed = container.find('#te-packs-failed');
 
     $loaded.append(Object.keys(loadedPacks).map(function (name) {
       var count = loadedPacks[name].icons.length;
       return '<span><i>' + name + '</i> (<code>' + count +'</code>)</span>';
+    }).join(', '));
+
+    $failed.append(failedPacks.map(function (url) {
+      return '<code>' + url.replace(defaultDomain, '<i>(default domain)</i>') + '</code>';
     }).join(', '));
 
     imageWidth = Settings.get(TE_WIDTH) || null;
