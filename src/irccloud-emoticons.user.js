@@ -282,6 +282,9 @@ function init() {
 
   container.find('#te-reload').on('click', function() {
     try {
+      for (var key in localStorage) {
+        if (key.indexOf(TE_CACHED) !== -1) localStorage.removeItem(key);
+      }
       result.text('Emptied emoticon cache successfully!');
       result.removeClass().addClass('te-result userSuccess');
     }
