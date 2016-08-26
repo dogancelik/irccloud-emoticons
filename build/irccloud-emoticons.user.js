@@ -4,7 +4,7 @@
 // @description Enables Twitch emoticons and more in IRCCloud
 // @icon        https://cdn.rawgit.com/irccloud-ext/graphics/master/emoticon-128.png
 // @include     https://www.irccloud.com/*
-// @version     3.0.0
+// @version     3.0.1
 // @grant       none
 // @updateURL   https://github.com/dogancelik/irccloud-emoticons/raw/dev/build/irccloud-emoticons.meta.js
 // @downloadURL https://github.com/dogancelik/irccloud-emoticons/raw/dev/build/irccloud-emoticons.user.js
@@ -66,11 +66,11 @@ function embedStyle() {
 }
 
 function createMenu() {
-  return $('<div id="te-bar" class="settingsMenu__item settingsMenu__item__twitchemoticons"><a class="settingsMenu__link" href="#?/settings=twitchemoticons">Twitch Emoticons</a></div>').insertAfter('.settingsContainer .settingsMenu .settingsMenu__item:last');
+  return $('<div id="te-bar" class="settingsMenu__item settingsMenu__item__twitchemoticons"><a class="settingsMenu__link" href="#?/settings=twitchemoticons">Emoticons</a></div>').insertAfter('.settingsContainer .settingsMenu .settingsMenu__item:last');
 }
 
 function createContainer() {
-  return $('<div id="te-container" data-section="twitchemoticons" class="settingsContents settingsContents__twitchemoticons"><h2 id="te-main-header" class="settingsTitle"><span><i>Emoticons</i></span>&nbsp;<input id="te-enabled-check" type="checkbox"/>&nbsp;<label id="te-enabled-label" for="te-enabled-check"></label></h2><p class="explanation">Type your text as you normally would, the script will automatically add emoticons to the messages.</p><div id="te-actions"><button id="te-reload"><span>Load the latest emoticons file</span></button><button id="te-reset"><span>Reset <i>Emoticons</i> completely</span></button></div><div id="te-result" class="te-result"></div><p class="te-bold explanation">After you change a setting, you need to click <i>Cancel</i> or <i>Save</i> button and reload the page.</p><h3>What to Watch?</h3><table class="checkboxForm"><tr><td><input id="te-enabled-messages-all" type="radio" name="watch"/></td><th><label for="te-enabled-messages-all">Watch all messages (including history)</label></th></tr><tr><td><input id="te-enabled-messages-new" type="radio" name="watch"/></td><th><label for="te-enabled-messages-new">Watch new messages only</label></th></tr></table><h3>Emoticon Sets</h3><p class="form"><label for="te-packs-active">Active Packs</label></p><p class="form"><textarea id="te-packs-active" class="input settings__inputSetting"></textarea></p><p class="form"><span>Loaded Packs:&nbsp;</span><span id="te-packs-loaded"></span></p><h3>Emoticon Size</h3><table class="form"><tr><th><label for="te-image-width">Width</label><span class="explanation">&nbsp;(optional)</span></th><td><input id="te-image-width" type="text" class="input"/></td></tr><tr><th><label for="te-image-height">Height</label><span class="explanation">&nbsp;(optional)</span></th><td><input id="te-image-height" type="text" class="input"/></td></tr></table><hr/><p id="te-donate" class="explanation">If you like this script, please&nbsp;<a href="http://dogancelik.com/donate.html" target="_blank">consider a donation</a></p><p class="explanation"><a href="https://github.com/dogancelik/irccloud-twitch-emoticons" target="_blank">Source code</a>&nbsp;-&nbsp;<a href="https://github.com/dogancelik/irccloud-twitch-emoticons/issues" target="_blank">Report bug / Request feature</a></p></div>').insertAfter('.settingsContentsWrapper .settingsContents:last');
+  return $('<div id="te-container" data-section="twitchemoticons" class="settingsContents settingsContents__twitchemoticons"><h2 id="te-main-header" class="settingsTitle"><span><i>Emoticons</i></span>&nbsp;<input id="te-enabled-check" type="checkbox"/>&nbsp;<label id="te-enabled-label" for="te-enabled-check"></label></h2><p class="explanation">Type your text as you normally would, the script will automatically add emoticons to the messages.</p><div id="te-actions"><button id="te-reload"><span>Load the latest emoticons file</span></button><button id="te-reset"><span>Reset <i>Emoticons</i> completely</span></button></div><div id="te-result" class="te-result"></div><p class="te-bold explanation">After you change a setting, you need to click <i>Cancel</i> or <i>Save</i> button and reload the page.</p><h3>What to Watch?</h3><table class="checkboxForm"><tr><td><input id="te-enabled-messages-all" type="radio" name="watch"/></td><th><label for="te-enabled-messages-all">Watch all messages (including history)</label></th></tr><tr><td><input id="te-enabled-messages-new" type="radio" name="watch"/></td><th><label for="te-enabled-messages-new">Watch new messages only</label></th></tr></table><h3>Emoticon Sets</h3><p class="form"><label for="te-packs-active">Active Packs</label></p><p class="form"><textarea id="te-packs-active" class="input settings__inputSetting"></textarea></p><p class="form"><span>Loaded Packs:&nbsp;</span><span id="te-packs-loaded"></span></p><h3>Emoticon Size</h3><table class="form"><tr><th><label for="te-image-width">Width</label><span class="explanation">&nbsp;(optional)</span></th><td><input id="te-image-width" type="text" class="input"/></td></tr><tr><th><label for="te-image-height">Height</label><span class="explanation">&nbsp;(optional)</span></th><td><input id="te-image-height" type="text" class="input"/></td></tr></table><hr/><p id="te-donate" class="explanation">If you like this script, please&nbsp;<a href="http://dogancelik.com/donate.html" target="_blank">consider a donation</a></p><p class="explanation"><a href="https://github.com/dogancelik/irccloud-emoticons" target="_blank">Source code</a>&nbsp;-&nbsp;<a href="https://github.com/dogancelik/irccloud-emoticons/issues" target="_blank">Report bug / Request feature</a></p></div>').insertAfter('.settingsContentsWrapper .settingsContents:last');
 }
 
 function loadPacks(urls, callback) {
@@ -95,7 +95,6 @@ function loadPacks(urls, callback) {
     }
 
     var packName = Settings.get(TE_URLS + '.' + url); // resolved pack name from previously downloaded url
-    console.log(url, packName);
     var shouldRefresh = false;
 
     if (packName != null) {
@@ -121,7 +120,11 @@ function loadPacks(urls, callback) {
       shouldRefresh = true; // no cached pack url -> pack name
     }
 
-    console.log(shouldRefresh, url, pack);
+    console.log('Cached pack name:', packName);
+    console.log('Should refresh:', shouldRefresh);
+    console.log('URL:', url);
+    console.log('Cached pack:', pack);
+
     if (shouldRefresh) {
       return $.getJSON(url)
       .then(function (data) {
@@ -140,13 +143,9 @@ function loadPacks(urls, callback) {
     .then(function () {
       console.log('args:', arguments);
       for (var i = 0; i < arguments.length; i++) {
-        var pack;
-        if ($.isFunction(arguments[i])) { // it's a promise
-          if (arguments[i][1] !== 'success') continue; // pass errors
-          pack = arguments[i][0]; // jqXHR data
-        } else {
-          pack = arguments[i];
-        }
+        var pack = arguments[i];
+        if (typeof pack !== 'object') continue; // skip failed requests
+        if (!pack.hasOwnProperty('name')) continue; // skip objects that has not name
 
         var packName = pack.name;
         Settings.set(TE_CACHED + '.' + packName, JSON.stringify(pack));
@@ -305,11 +304,12 @@ function init() {
 
   container.find('#te-reset').on('click', function() {
     try {
-      Settings.remove([TE_ENABLED,TE_DATA,TE_WATCH,TE_ACTIVE,TE_CACHED,TE_URLS,TE_WHITELIST,TE_WIDTH,TE_HEIGHT]);
+      Settings.remove([TE_ENABLED,TE_DATA,TE_WATCH,TE_ACTIVE,TE_CACHED,TE_URLS,TE_WIDTH,TE_HEIGHT]);
       result.text('Reset successful!');
       result.removeClass().addClass('te-result userSuccess');
     }
     catch (e) {
+      console.log('Reset error:', e);
       result.text('Reset unsuccessful!');
       result.removeClass().addClass('te-result userError');
     }

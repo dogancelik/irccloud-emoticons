@@ -55,7 +55,7 @@ function embedStyle() {
 }
 
 function createMenu() {
-  return $('<div id="te-bar" class="settingsMenu__item settingsMenu__item__twitchemoticons"><a class="settingsMenu__link" href="#?/settings=twitchemoticons">Twitch Emoticons</a></div>').insertAfter('.settingsContainer .settingsMenu .settingsMenu__item:last');
+  return $('<div id="te-bar" class="settingsMenu__item settingsMenu__item__twitchemoticons"><a class="settingsMenu__link" href="#?/settings=twitchemoticons">Emoticons</a></div>').insertAfter('.settingsContainer .settingsMenu .settingsMenu__item:last');
 }
 
 function createContainer() {
@@ -84,7 +84,6 @@ function loadPacks(urls, callback) {
     }
 
     var packName = Settings.get(TE_URLS + '.' + url); // resolved pack name from previously downloaded url
-    console.log(url, packName);
     var shouldRefresh = false;
 
     if (packName != null) {
@@ -110,7 +109,11 @@ function loadPacks(urls, callback) {
       shouldRefresh = true; // no cached pack url -> pack name
     }
 
-    console.log(shouldRefresh, url, pack);
+    console.log('Cached pack name:', packName);
+    console.log('Should refresh:', shouldRefresh);
+    console.log('URL:', url);
+    console.log('Cached pack:', pack);
+
     if (shouldRefresh) {
       return $.getJSON(url)
       .then(function (data) {
@@ -129,13 +132,9 @@ function loadPacks(urls, callback) {
     .then(function () {
       console.log('args:', arguments);
       for (var i = 0; i < arguments.length; i++) {
-        var pack;
-        if ($.isFunction(arguments[i])) { // it's a promise
-          if (arguments[i][1] !== 'success') continue; // pass errors
-          pack = arguments[i][0]; // jqXHR data
-        } else {
-          pack = arguments[i];
-        }
+        var pack = arguments[i];
+        if (typeof pack !== 'object') continue; // skip failed requests
+        if (!pack.hasOwnProperty('name')) continue; // skip objects that has not name
 
         var packName = pack.name;
         Settings.set(TE_CACHED + '.' + packName, JSON.stringify(pack));
@@ -294,11 +293,12 @@ function init() {
 
   container.find('#te-reset').on('click', function() {
     try {
-      Settings.remove([TE_ENABLED,TE_DATA,TE_WATCH,TE_ACTIVE,TE_CACHED,TE_URLS,TE_WHITELIST,TE_WIDTH,TE_HEIGHT]);
+      Settings.remove([TE_ENABLED,TE_DATA,TE_WATCH,TE_ACTIVE,TE_CACHED,TE_URLS,TE_WIDTH,TE_HEIGHT]);
       result.text('Reset successful!');
       result.removeClass().addClass('te-result userSuccess');
     }
     catch (e) {
+      console.log('Reset error:', e);
       result.text('Reset unsuccessful!');
       result.removeClass().addClass('te-result userError');
     }
