@@ -1,13 +1,14 @@
 #te-container.settingsContents.settingsContents__twitchemoticons(data-section='twitchemoticons')
   h2#te-main-header.settingsTitle
-    span Twitch Emoticons&nbsp;
+    span: i Emoticons
+    | &nbsp;
     input#te-enabled-check(type='checkbox')
     | &nbsp;
     label#te-enabled-label(for='te-enabled-check')
   p.explanation Type your text as you normally would, the script will automatically add emoticons to the messages.
   div#te-actions
     button#te-reload: span Load the latest emoticons file
-    button#te-reset: span Reset Twitch Emoticons completely
+    button#te-reset: span Reset <i>Emoticons</i> completely
   div#te-result.te-result
   p.te-bold.explanation After you change a setting, you need to click <i>Cancel</i> or <i>Save</i> button and reload the page.
   h3 What to Watch?
@@ -19,25 +20,13 @@
       td: input#te-enabled-messages-new(type='radio', name='watch')
       th: label(for='te-enabled-messages-new') Watch new messages only
   h3 Emoticon Sets
-  table#te-sets.checkboxForm
-    tr
-      td: input#te-enabled-global(type='checkbox')
-      th: label(for='te-enabled-global') Global emoticons&nbsp;
-        span
-    tr
-      td: input#te-enabled-subscriber(type='checkbox')
-      th
-        label(for='te-enabled-subscriber') Subscriber emoticons&nbsp;
-          span
-        div#te-whitelist-box
-          input#te-whitelist-input(type='text', placeholder='Channel whitelist')
-          br
-          span.explanation Leave empty if you want all subscriber emoticons; seperate channels with a comma.
-        span.explanation Use a whitelist if you are using <i>Watch all messages</i> option otherwise it may lag.
-    tr
-      td: input#te-enabled-betterttv(type='checkbox')
-      th: label(for='te-enabled-betterttv') BetterTTV emoticons&nbsp;
-        span
+  p.form
+    label(for='te-packs-active') Active Packs
+  p.form
+    textarea#te-packs-active.input.settings__inputSetting
+  p.form
+    span Loaded Packs:&nbsp;
+    span#te-packs-loaded
   h3 Emoticon Size
   table.form
     tr
@@ -58,4 +47,4 @@
     a(href='https://github.com/dogancelik/irccloud-twitch-emoticons', target='_blank') Source code
     | &nbsp;-&nbsp;
     a(href='https://github.com/dogancelik/irccloud-twitch-emoticons/issues', target='_blank') Report bug / Request feature
-    
+

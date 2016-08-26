@@ -1,23 +1,17 @@
 var gulp = require('gulp');
+var execa = require('execa');
 var jade = require('gulp-jade');
 var preprocess = require('gulp-preprocess');
 var stylus = require('gulp-stylus');
+var replace = require('gulp-replace');
 var concat = require('gulp-concat');
-var exec = require('child_process').exec;
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
 
 var pathDest = 'build/';
 var pathSrc = 'src/';
-var userJs = 'twitch_emoticons.user.js';
-var metaJs = 'twitch_emoticons.meta.js';
-
-gulp.task('emote', function (cb) {
-  var inputFile = ' ' + pathSrc + 'download_emotes.js';
-  var outputFile = ' ' + pathDest + 'emotes.all.json';
-  exec('node' + inputFile + outputFile, { cwd: __dirname }, function (err, stdout) {
-    console.log(stdout);
-    cb(err);
-  });
-});
+var userJs = 'irccloud-emoticons.user.js';
+var metaJs = 'irccloud-emoticons.meta.js';
 
 gulp.task('jade', function () {
   return gulp.src(pathSrc + 'container.jade')
@@ -31,24 +25,34 @@ gulp.task('stylus', function () {
     .pipe(gulp.dest(pathDest));
 });
 
-gulp.task('js', ['jade', 'stylus'], function () {
+gulp.task('meta', ['jade', 'stylus'], function () {
+  var branchCmd = 'git rev-parse --abbrev-ref HEAD';
+  var branchName = execa.shellSync(branchCmd).stdout || 'master';
+
+  return gulp.src(pathSrc + metaJs)
+    .pipe(replace('$user$', userJs))
+    .pipe(replace('$meta$', metaJs))
+    .pipe(replace('$branch$', branchName))
+    .pipe(gulp.dest(pathDest));
+});
+
+gulp.task('js', ['meta'], function () {
   return gulp.src(pathSrc + userJs)
+    .pipe(replace('$meta$', metaJs))
     .pipe(preprocess())
     .pipe(gulp.dest(pathDest));
 });
 
-gulp.task('concat', ['js'], function () {
-  gulp.src(pathSrc + metaJs).pipe(gulp.dest(pathDest));
-  
-  return gulp.src([pathSrc + metaJs, pathDest + userJs])
-    .pipe(concat(userJs))
-    .pipe(gulp.dest(pathDest));
+gulp.task('jshint', function () {
+  return gulp.src(pathSrc + userJs)
+    .pipe(jshint({ jquery: true }))
+    .pipe(jshint.reporter(stylish));
 });
 
-gulp.task('build', ['concat']);
+gulp.task('build', ['js']);
 
 gulp.task('watch', function () {
-  gulp.watch(pathSrc + '*.*', ['build']);
+  gulp.watch(pathSrc + '*.*', ['build', 'jshint']);
 });
 
 gulp.task('default', ['build']);
