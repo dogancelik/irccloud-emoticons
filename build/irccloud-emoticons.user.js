@@ -4,7 +4,7 @@
 // @description Enables Twitch emoticons and more in IRCCloud
 // @icon        https://cdn.rawgit.com/irccloud-ext/graphics/master/emoticon-128.png
 // @include     https://www.irccloud.com/*
-// @version     3.0.1
+// @version     3.0.2
 // @grant       none
 // @updateURL   https://github.com/dogancelik/irccloud-emoticons/raw/dev/build/irccloud-emoticons.meta.js
 // @downloadURL https://github.com/dogancelik/irccloud-emoticons/raw/dev/build/irccloud-emoticons.user.js
@@ -166,17 +166,15 @@ function createRegex(key, sep, opts) {
   return new RegExp(sep + escapeRegExp(key) + sep, opts);
 }
 
-function loopTextNodes(el, key, img, rgx) {
+function loopTextNodes(el, iconKey, img, rgx) {
   Array.prototype.slice.call(el.childNodes).forEach(function(node) {
     if (node.nodeType === Node.TEXT_NODE) {
-      var splitNode = node;
-      var lastNode = node;
-      var match = splitNode.data.match(rgx);
-      if (match != null) {
-        splitNode = splitNode.splitText(match.index);
-        splitNode.data = splitNode.data.replace(rgx, '');
-        el.insertBefore(img.clone()[0], splitNode);
-        loopTextNodes(el, key, img, rgx);
+      rgx.lastIndex = 0;
+      var result;
+      while (result = rgx.exec(node.data)) {
+        var newNode = node.splitText(result.index);
+        newNode.replaceData(0, result[0].length, '');
+        el.insertBefore(img.clone()[0], newNode);
       }
     }
   });
@@ -185,16 +183,17 @@ function loopTextNodes(el, key, img, rgx) {
 function processPack(packName, el, width, height) {
   for (var i = 0; i < loadedPacks[packName].icons.length; i++) {
     var icon = loadedPacks[packName].icons[i];
+    var matchType = loadedPacks[packName].match;
     // Regex
     var rgx;
-    if (loadedPacks[packName].match === 'word') {
+    if (matchType === 'word') {
       rgx = createRegex(icon.match);
     } else {
       rgx = createRegex(icon.match, '\\S?');
     }
 
     // Search text
-    if (el.innerHTML.indexOf(icon.match) === -1) continue;
+    if (matchType === 'word' && el.innerHTML.indexOf(icon.match) === -1) continue;
     if (!rgx.test(el.innerHTML)) continue;
 
     // Image tag
