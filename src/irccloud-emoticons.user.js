@@ -15,6 +15,10 @@ var failedPacks = [];
 var imageWidth = null;
 var imageHeight = null;
 
+// Other regex matching options
+var optsRegex = { sep: '\\S?', escape: false };
+var optsNonword = { sep: '\\S?' };
+
 // Settings names
 var TE_ENABLED = 'enabled';
 var TE_DATA = 'emote.data';
@@ -40,8 +44,7 @@ var Settings = {
     localStorage.setItem(this.keyPrefix + key, value);
   },
   remove: function (keys) {
-    var keys = [].concat(keys);
-    keys.forEach((function (key) {
+    [].concat(keys).forEach((function (key) {
       localStorage.removeItem(this.keyPrefix + key);
     }).bind(this));
   }
@@ -83,11 +86,11 @@ function loadPacks(urls, callback) {
       url = defaultDomain + url + '.json';
     }
 
+    var pack;
     var packName = Settings.get(TE_URLS + '.' + url); // resolved pack name from previously downloaded url
     var shouldRefresh = false;
 
     if (packName != null) {
-      var pack;
       try {
         pack = JSON.parse(Settings.get(TE_CACHED + '.' + packName));
       } catch (e) {
@@ -150,10 +153,13 @@ function escapeRegExp(str){
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function createRegex(key, sep, opts) {
-  if (typeof sep === 'undefined') sep = '\\b';
-  if (typeof opts === 'undefined') opts = 'g';
-  return new RegExp(sep + escapeRegExp(key) + sep, opts);
+function createRegex(key, opts) {
+  if (typeof opts === 'undefined') opts = {};
+  if (!opts.hasOwnProperty('sep')) opts.sep = '\\b';
+  if (!opts.hasOwnProperty('flags')) opts.flags = 'g';
+  if (!opts.hasOwnProperty('escape')) opts.escape = true;
+
+  return new RegExp(opts.sep + (opts.escape ? escapeRegExp(key) : key) + opts.sep, opts.flags);
 }
 
 function loopTextNodes(el, iconKey, img, rgx) {
@@ -171,20 +177,25 @@ function loopTextNodes(el, iconKey, img, rgx) {
 }
 
 function processPack(packName, el, width, height) {
+  var matchType = loadedPacks[packName].match;
+
   for (var i = 0; i < loadedPacks[packName].icons.length; i++) {
     var icon = loadedPacks[packName].icons[i];
-    var matchType = loadedPacks[packName].match;
+    console.log('icon:', icon, 'match:', icon.match);
     // Regex
     var rgx;
     if (matchType === 'word') {
       rgx = createRegex(icon.match);
+    } else if (matchType === 'regex') {
+      rgx = createRegex(icon.match, optsRegex);
     } else {
-      rgx = createRegex(icon.match, '\\S?');
+      rgx = createRegex(icon.match, optsNonword);
     }
 
     // Search text
     if (matchType === 'word' && el.innerHTML.indexOf(icon.match) === -1) continue;
     if (!rgx.test(el.innerHTML)) continue;
+
 
     // Image tag
     var img = loadedPacks[packName].template;
