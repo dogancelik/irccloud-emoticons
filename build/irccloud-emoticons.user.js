@@ -4,7 +4,7 @@
 // @description Enables Twitch emoticons and more in IRCCloud
 // @icon        https://cdn.rawgit.com/irccloud-ext/graphics/master/emoticon-128.png
 // @include     https://www.irccloud.com/*
-// @version     3.0.5
+// @version     3.0.6
 // @grant       none
 // @updateURL   https://github.com/dogancelik/irccloud-emoticons/raw/dev/build/irccloud-emoticons.meta.js
 // @downloadURL https://github.com/dogancelik/irccloud-emoticons/raw/dev/build/irccloud-emoticons.user.js
@@ -174,15 +174,25 @@ function createRegex(key, opts) {
 }
 
 function loopTextNodes(el, iconKey, img, rgx) {
-  Array.prototype.slice.call(el.childNodes).forEach(function(node) {
-    if (node.nodeType === Node.TEXT_NODE) {
+  var arr;
+  if (el.nodeType === Node.TEXT_NODE) {
+    arr = [el];
+  } else {
+    arr = Array.prototype.slice.call(el.childNodes).filter(function (node) {
+      return node.nodeType === Node.TEXT_NODE;
+    });
+  }
+
+  arr.forEach(function(node) {
+    var newNode = node;
+    rgx.lastIndex = 0;
+    var result;
+    while (result = rgx.exec(newNode.data)) {
       rgx.lastIndex = 0;
-      var result;
-      while (result = rgx.exec(node.data)) {
-        var newNode = node.splitText(result.index);
-        newNode.replaceData(0, result[0].length, '');
-        el.insertBefore(img.clone()[0], newNode);
-      }
+      newNode = newNode.splitText(result.index);
+      newNode.replaceData(0, result[0].length, '');
+      newNode.parentNode.insertBefore(img.clone()[0], newNode);
+      // loopTextNodes(newNode, iconKey, img, rgx);
     }
   });
 }
