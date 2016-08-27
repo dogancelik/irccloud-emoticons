@@ -4,7 +4,7 @@
 // @description Enables Twitch emoticons and more in IRCCloud
 // @icon        https://cdn.rawgit.com/irccloud-ext/graphics/master/emoticon-128.png
 // @include     https://www.irccloud.com/*
-// @version     3.0.4
+// @version     3.0.5
 // @grant       none
 // @updateURL   https://github.com/dogancelik/irccloud-emoticons/raw/dev/build/irccloud-emoticons.meta.js
 // @downloadURL https://github.com/dogancelik/irccloud-emoticons/raw/dev/build/irccloud-emoticons.user.js
@@ -192,7 +192,7 @@ function processPack(packName, el, width, height) {
 
   for (var i = 0; i < loadedPacks[packName].icons.length; i++) {
     var icon = loadedPacks[packName].icons[i];
-    console.log('icon:', icon, 'match:', icon.match);
+
     // Regex
     var rgx;
     if (matchType === 'word') {
@@ -205,8 +205,7 @@ function processPack(packName, el, width, height) {
 
     // Search text
     if (matchType === 'word' && el.innerHTML.indexOf(icon.match) === -1) continue;
-    if (!rgx.test(el.innerHTML)) continue;
-
+    if (!rgx.test(el.textContent)) continue;
 
     // Image tag
     var img = loadedPacks[packName].template;

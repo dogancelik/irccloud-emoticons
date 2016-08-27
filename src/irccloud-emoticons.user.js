@@ -181,7 +181,7 @@ function processPack(packName, el, width, height) {
 
   for (var i = 0; i < loadedPacks[packName].icons.length; i++) {
     var icon = loadedPacks[packName].icons[i];
-    console.log('icon:', icon, 'match:', icon.match);
+
     // Regex
     var rgx;
     if (matchType === 'word') {
@@ -194,8 +194,7 @@ function processPack(packName, el, width, height) {
 
     // Search text
     if (matchType === 'word' && el.innerHTML.indexOf(icon.match) === -1) continue;
-    if (!rgx.test(el.innerHTML)) continue;
-
+    if (!rgx.test(el.textContent)) continue;
 
     // Image tag
     var img = loadedPacks[packName].template;
