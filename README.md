@@ -13,7 +13,7 @@ Supported browsers: Firefox with [Greasemonkey](https://addons.mozilla.org/en-us
 * This version includes ability to add your own emoticon packs. [Click here for examples](https://github.com/irccloud-ext/emoticon-packs)
 * By default, global Twitch emoticons and BetterTTV emoticons are enabled.
 * You can add channel emoticons by typing `/twitch/channelname`, `/twitch/lirik` (Channel name is lowercase)
-* You can add custom emoticon packs: `https://example.com/my-emoticons.json`
+* You can add custom emoticon packs: `https://example.com/my-emoticons.json`, `/msn`
 * Suggestions are welcome, bug reports are appreciated ![VoHiYo](https://static-cdn.jtvnw.net/emoticons/v1/81274/1.0)
 
 ## Features
