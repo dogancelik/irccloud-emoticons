@@ -149,6 +149,22 @@ function loadPacks(urls, callback) {
     });
 }
 
+function addRegexes() {
+  Object.keys(loadedPacks).forEach(function (packName) {
+    var matchType = loadedPacks[packName].match;
+    for (var i = 0; i < loadedPacks[packName].icons.length; i++) {
+      var _regex;
+      var match = loadedPacks[packName].icons[i].match;
+      switch (matchType) {
+        case 'word': _regex = createRegex(match); break;
+        case 'regex': _regex = createRegex(match, optsRegex); break;
+        default: _regex = createRegex(match, optsNonword); break;
+      }
+      loadedPacks[packName].icons[i]._regex = _regex;
+    }
+  });
+}
+
 function escapeRegExp(str){
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -188,23 +204,12 @@ function loopTextNodes(el, iconKey, img, rgx) {
 
 function processPack(packName, el, width, height) {
   var matchType = loadedPacks[packName].match;
-
   for (var i = 0; i < loadedPacks[packName].icons.length; i++) {
     var icon = loadedPacks[packName].icons[i];
 
-    // Regex
-    var rgx;
-    if (matchType === 'word') {
-      rgx = createRegex(icon.match);
-    } else if (matchType === 'regex') {
-      rgx = createRegex(icon.match, optsRegex);
-    } else {
-      rgx = createRegex(icon.match, optsNonword);
-    }
-
     // Search text
     if (matchType === 'word' && el.innerHTML.indexOf(icon.match) === -1) continue;
-    if (!rgx.test(el.textContent)) continue;
+    if (!icon._regex.test(el.textContent)) continue;
 
     // Image tag
     var img = loadedPacks[packName].template;
@@ -214,7 +219,7 @@ function processPack(packName, el, width, height) {
     img = $(img).width(width).height(height);
 
     // Replace
-    loopTextNodes(el, icon.match, img, rgx);
+    loopTextNodes(el, icon.match, img, icon._regex);
   }
 }
 
@@ -353,6 +358,8 @@ function init() {
 
   loadPacks(packsToLoad, function() {
     console.log('Loaded packs:', loadedPacks);
+    addRegexes(); // don't create regexes on message processing
+
     var $loaded = container.find('#te-packs-loaded');
     var $failed = container.find('#te-packs-failed');
 
