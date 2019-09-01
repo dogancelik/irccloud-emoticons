@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var execa = require('execa');
-var jade = require('gulp-jade');
+var pug = require('gulp-pug');
 var preprocess = require('gulp-preprocess');
 var stylus = require('gulp-stylus');
 var replace = require('gulp-replace');
@@ -13,19 +13,19 @@ var pathSrc = 'src/';
 var userJs = 'irccloud-emoticons.user.js';
 var metaJs = 'irccloud-emoticons.meta.js';
 
-gulp.task('jade', function () {
+exports.jade = function jade() {
   return gulp.src(pathSrc + 'container.jade')
-    .pipe(jade())
+    .pipe(pug())
     .pipe(gulp.dest(pathDest));
-});
+};
 
-gulp.task('stylus', function () {
+exports.css = function css() {
   return gulp.src(pathSrc + 'style.styl')
     .pipe(stylus({ compress: true }))
     .pipe(gulp.dest(pathDest));
-});
+};
 
-gulp.task('meta', ['jade', 'stylus'], function () {
+exports.meta = function () {
   var branchCmd = 'git rev-parse --abbrev-ref HEAD';
   var branchName = execa.shellSync(branchCmd).stdout || 'master';
 
@@ -34,25 +34,26 @@ gulp.task('meta', ['jade', 'stylus'], function () {
     .pipe(replace('$meta$', metaJs))
     .pipe(replace('$branch$', branchName))
     .pipe(gulp.dest(pathDest));
-});
+};
 
-gulp.task('js', ['meta'], function () {
+exports.js = function js() {
   return gulp.src(pathSrc + userJs)
     .pipe(replace('$meta$', metaJs))
     .pipe(preprocess())
     .pipe(gulp.dest(pathDest));
-});
+};
 
-gulp.task('jshint', function () {
+exports.jshint = function jshint() {
   return gulp.src(pathSrc + userJs)
     .pipe(jshint({ jquery: true }))
     .pipe(jshint.reporter(stylish));
-});
+};
 
-gulp.task('build', ['js']);
+exports.watch = function watch() {
+  gulp.watch(pathSrc + '*.*', gulp.parallel(exports.default, exports.jshint));
+};
 
-gulp.task('watch', function () {
-  gulp.watch(pathSrc + '*.*', ['build', 'jshint']);
-});
-
-gulp.task('default', ['build']);
+exports.default = gulp.series(
+  gulp.parallel(exports.jade, exports.css, exports.meta),
+  exports.js
+);
